@@ -1,6 +1,14 @@
 package br.unisinos.edu.request.dto;
 
-public class ServiceExecutionRequest<T> {
+public class ServiceExecutionRequest {
 	private String serviceID;
-	private T data;
+	private Object parameterData;
+	
+	public String getServiceID() {
+		return serviceID;
+	}
+
+	public Object getParameterData() {
+		return parameterData;
+	}
 }

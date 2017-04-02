@@ -22,7 +22,7 @@ public final class GeneralRequestProcessor implements RequestProcessor<Object, O
 		}
 		
 		if(request instanceof ServiceExecutionProcessor){
-			ServiceExecutionRequest<?> serviceExecutionRequest = (ServiceExecutionRequest<?>)request;
+			ServiceExecutionRequest serviceExecutionRequest = (ServiceExecutionRequest)request;
 			return ServiceExecutionProcessor.getInstance().processRequest(serviceExecutionRequest);
 		}
 		
