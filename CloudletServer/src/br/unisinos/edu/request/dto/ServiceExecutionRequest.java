@@ -8,7 +8,7 @@ public class ServiceExecutionRequest {
 		return serviceID;
 	}
 
-	public Object getParameterData() {
+	public Object getParametersData() {
 		return parameterData;
 	}
 }

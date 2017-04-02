@@ -13,17 +13,17 @@ public final class GeneralRequestProcessor implements RequestProcessor<Object, O
 	public Object processRequest(Object request){
 		if(request instanceof RegistrationRequest){
 			RegistrationRequest registrationRequest = (RegistrationRequest)request;
-			return RegistrationProcessor.getInstance().processRequest(registrationRequest);
+			return ServiceRegistrationRequestProcessor.getInstance().processRequest(registrationRequest);
 		}
 		
 		if(request instanceof ServiceCheckRequest){
 			ServiceCheckRequest serviceCheckRequest = (ServiceCheckRequest)request;
-			return ServiceCheckProcessor.getInstance().processRequest(serviceCheckRequest);
+			return ServiceCheckRequestProcessor.getInstance().processRequest(serviceCheckRequest);
 		}
 		
-		if(request instanceof ServiceExecutionProcessor){
+		if(request instanceof ServiceExecutionRequestProcessor){
 			ServiceExecutionRequest serviceExecutionRequest = (ServiceExecutionRequest)request;
-			return ServiceExecutionProcessor.getInstance().processRequest(serviceExecutionRequest);
+			return ServiceExecutionRequestProcessor.getInstance().processRequest(serviceExecutionRequest);
 		}
 		
 		throw new NoRequestProcessorFound(request);

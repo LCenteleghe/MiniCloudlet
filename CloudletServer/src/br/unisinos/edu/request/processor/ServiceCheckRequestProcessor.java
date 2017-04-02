@@ -3,12 +3,12 @@ package br.unisinos.edu.request.processor;
 import br.unisinos.edu.ServicesBase;
 import br.unisinos.edu.request.dto.ServiceCheckRequest;
 
-public final class ServiceCheckProcessor implements RequestProcessor<ServiceCheckRequest,  Boolean>{
+public final class ServiceCheckRequestProcessor implements RequestProcessor<ServiceCheckRequest,  Boolean>{
 	
-	private ServiceCheckProcessor(){}
+	private ServiceCheckRequestProcessor(){}
 	
-	public static ServiceCheckProcessor getInstance(){
-		return new ServiceCheckProcessor();
+	public static ServiceCheckRequestProcessor getInstance(){
+		return new ServiceCheckRequestProcessor();
 	}
 
 	public Boolean processRequest(ServiceCheckRequest request){
