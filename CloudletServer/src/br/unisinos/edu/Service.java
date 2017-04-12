@@ -1,6 +1,10 @@
 package br.unisinos.edu;
 
-public final class Service {
+import java.io.Serializable;
+
+public final class Service implements Serializable {
+	private static final long serialVersionUID = 734412204365522334L;
+	
 	private final String id;
 	private final String entryMethod;
 	private final Object code;
@@ -28,5 +32,10 @@ public final class Service {
 
 	public String getEntryMethod() {
 		return entryMethod;
+	}
+
+	@Override
+	public String toString() {
+		return "Service [id=" + id + ", entryMethod=" + entryMethod + ", code=" + code + ", mimeType=" + mimeType + "]";
 	}
 }

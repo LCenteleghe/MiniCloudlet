@@ -6,6 +6,7 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import br.unisinos.edu.Service;
+import br.unisinos.edu.exception.ServiceExecutionFailureException;
 
 public class ScriptExecutor implements ServiceExecutor {
 	ScriptEngine engine;
@@ -16,15 +17,16 @@ public class ScriptExecutor implements ServiceExecutor {
 		engine = new ScriptEngineManager().getEngineByMimeType(mimeType);
 	}
 
-	@Override
 	public Object execute(Service service, Object parametersData) {
 		try {
 			engine.eval(service.getCode().toString());
 			Invocable invocableEngine = (Invocable) engine;
 			return invocableEngine.invokeFunction(service.getEntryMethod(), parametersData);
 		} catch (NoSuchMethodException | ScriptException e) {
-			return e;
+			return new ServiceExecutionFailureException(e);
 		}
 	}
+
+
 
 }

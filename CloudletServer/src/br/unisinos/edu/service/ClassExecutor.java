@@ -1,9 +1,12 @@
 package br.unisinos.edu.service;
 
-import javax.script.Invocable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
+
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 
 import br.unisinos.edu.Service;
 
@@ -16,10 +19,11 @@ public class ClassExecutor implements ServiceExecutor {
 	@Override
 	public Object execute(Service service, Object parametersData) {
 		try {
-			engine.eval(service.getCode().toString());
-			Invocable invocableEngine = (Invocable) engine;
-			return invocableEngine.invokeFunction(service.getEntryMethod(), parametersData);
-		} catch (NoSuchMethodException | ScriptException e) {
+			Class<?> clazz = (Class)service.getCode();
+			Object instance = clazz.newInstance();
+			Method method = clazz.getMethod(service.getEntryMethod());
+			return method.invoke(instance, parametersData);
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			return e;
 		}
 	}

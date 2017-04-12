@@ -1,6 +1,5 @@
 package br.unisinos.edu;
 
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -13,39 +12,50 @@ import br.unisinos.edu.request.processor.GeneralRequestProcessor;
  */
 public final class ServerThread implements Runnable {
 	private final Socket socket;
-	private GeneralRequestProcessor requestProcessor;
+	private ObjectInputStream streamFromClient;
+	private ObjectOutputStream streamToClient;
 	
-	private ServerThread(Socket socket){
+	private GeneralRequestProcessor requestProcessor = GeneralRequestProcessor.getInstance();
+
+	private ServerThread(Socket socket) throws IOException {
 		this.socket = socket;
+		streamFromClient = new ObjectInputStream(socket.getInputStream());
+		streamToClient = new ObjectOutputStream(socket.getOutputStream());
+		
+		System.out.println("Server thread started to serve the socket: " + socket);
 	}
-	
-	public static Runnable newInstance(Socket socket){
+
+	public static Runnable newInstance(Socket socket) throws IOException {
 		return new ServerThread(socket);
 	}
-	
+
 	/**
-	 * Aguarda um request do cliente, ao receber o request, retorna ele como String.
+	 * Aguarda um request do cliente, ao receber o request, retorna ele como
+	 * String.
+	 * 
 	 * @return
 	 * @throws IOException
-	 * @throws ClassNotFoundException 
+	 * @throws ClassNotFoundException
 	 */
-	private Object waitForRequest() throws ClassNotFoundException, IOException  {
-		return new ObjectInputStream(socket.getInputStream()).readObject();
+	private Object waitForRequest() throws ClassNotFoundException, IOException {
+		return streamFromClient.readObject();
 	}
-	
-	private Object processRequest(Object request){
+
+	private Object processRequest(Object request) {
+		System.out.println("Request received on socket: " + socket + " \nRequest: " + request);
 		return requestProcessor.processRequest(request);
 	}
-	
+
 	/**
 	 * Responde ao request do cliente com os bytes do arquivo solicidado.
-	 * @param requestMsg Requisição (nome do arquivo desejado).
+	 * 
+	 * @param requestMsg
+	 *            Requisição (nome do arquivo desejado).
 	 * @throws IOException
 	 */
 	private void sendResponse(Object response) throws IOException {
-		ObjectOutputStream streamToClient = new ObjectOutputStream(socket.getOutputStream());
 		streamToClient.writeObject(response);
-		streamToClient.close();
+		System.out.println("Response send to socket " + socket + " \nResponse: " + response);
 	}
 
 	/**
@@ -64,12 +74,14 @@ public final class ServerThread implements Runnable {
 	 */
 	public void run() {
 		try {
-			Object request = waitForRequest();
-			Object response = processRequest(request);
-			sendResponse(response);
+			while (socket.isConnected()) {
+				Object request = waitForRequest();
+				Object response = processRequest(request);
+				sendResponse(response);
+			}
 		} catch (IOException | ClassNotFoundException e) {
 			sendErrorResponse(e);
-		} finally{
+		} finally {
 			closeSocket();
 		}
 	}
@@ -79,9 +91,8 @@ public final class ServerThread implements Runnable {
 		try {
 			sendResponse(e);
 		} catch (IOException e1) {
-			System.err.println(
-					  "The server was unable to send "
-					+ "the error response to the client: " + e.getMessage());
+			System.err
+					.println("The server was unable to send " + "the error response to the client: " + e.getMessage());
 		}
 	}
 
