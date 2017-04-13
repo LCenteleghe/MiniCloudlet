@@ -7,14 +7,12 @@ public class ClouletAvailabilityQueryProcessor implements QueryProcessor {
 	
 	@Override
 	public String processQuery(String query) {
-		// TODO Auto-generated method stub
-		return null;
+		return String.valueOf(true);
 	}
 
 	@Override
 	public String getQueryStyle() {
-		// TODO Auto-generated method stub
-		return null;
+		return "AVAILABLE";
 	}
 
 	@Override

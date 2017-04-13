@@ -1,25 +1,27 @@
 package br.unisinos.edu.request.processor.query;
 
+import java.util.regex.Pattern;
+
 public class ServiceCheckQueryProcessor implements QueryProcessor {
 	private static ServiceCheckQueryProcessor instance = new ServiceCheckQueryProcessor();
+	
+	Pattern pattern = Pattern.compile("CHECK (\\S+)");
 	
 	private ServiceCheckQueryProcessor() {}
 
 	@Override
 	public String processQuery(String query) {
-		// TODO Auto-generated method stub
-		return null;
+		return getQueryStyle();
 	}
 
 	@Override
 	public String getQueryStyle() {
-		// TODO Auto-generated method stub
-		return null;
+		return "";
 	}
 
 	@Override
 	public String getQuerySummary() {
-		return "CHECK $ServiceID 	 Check whether a service is available in cloudlet.";
+		return "CHECK $ServiceID 	Check whether a service is available in cloudlet.";
 	}
 	
 	public static ServiceCheckQueryProcessor getInstance(){

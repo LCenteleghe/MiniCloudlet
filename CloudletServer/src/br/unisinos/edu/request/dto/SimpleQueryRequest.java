@@ -11,7 +11,7 @@ public class SimpleQueryRequest implements Serializable {
 		this.query = serviceID;
 	}
 
-	public String getServiceID() {
+	public String getQuery() {
 		return query;
 	}
 
