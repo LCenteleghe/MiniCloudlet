@@ -2,7 +2,7 @@ package br.unisinos.edu.request.processor;
 
 import br.unisinos.edu.exception.NoRequestProcessorFound;
 import br.unisinos.edu.request.dto.ServiceRegistrationRequest;
-import br.unisinos.edu.request.dto.ServiceCheckRequest;
+import br.unisinos.edu.request.dto.SimpleQueryRequest;
 import br.unisinos.edu.request.dto.ServiceExecutionRequest;
 
 public final class GeneralRequestProcessor implements RequestProcessor<Object, Object>{
@@ -19,9 +19,9 @@ public final class GeneralRequestProcessor implements RequestProcessor<Object, O
 			return ServiceRegistrationRequestProcessor.getInstance().processRequest(registrationRequest);
 		}
 		
-		if(request instanceof ServiceCheckRequest){
-			ServiceCheckRequest serviceCheckRequest = (ServiceCheckRequest)request;
-			return ServiceCheckRequestProcessor.getInstance().processRequest(serviceCheckRequest);
+		if(request instanceof SimpleQueryRequest){
+			SimpleQueryRequest serviceCheckRequest = (SimpleQueryRequest)request;
+			return SimpleQueryRequestProcessor.getInstance().processRequest(serviceCheckRequest);
 		}
 		
 		if(request instanceof ServiceExecutionRequest){

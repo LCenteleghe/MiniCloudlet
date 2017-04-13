@@ -6,7 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import br.unisinos.edu.request.dto.ServiceCheckRequest;
+import br.unisinos.edu.request.dto.SimpleQueryRequest;
 import br.unisinos.edu.request.dto.ServiceExecutionRequest;
 import br.unisinos.edu.request.dto.ServiceRegistrationRequest;
 
@@ -17,7 +17,7 @@ public class Client {
 	}
 
 	public void start() throws UnknownHostException, IOException, ClassNotFoundException {
-		ServiceCheckRequest checkRequest = new ServiceCheckRequest("sum");
+		SimpleQueryRequest checkRequest = new SimpleQueryRequest("sum");
 
 		Socket socket = new Socket("127.0.0.1", 5555);
 
@@ -30,7 +30,7 @@ public class Client {
 		os.writeObject(checkRequest);
 		System.out.println(inputStream.readObject());
 		
-		Service service = new Service("sum", "sum", Sum.class, "application/java");
+		Service service = new Service("sum", "sum", Sum.class, "application/javascript");
 		
 		ServiceRegistrationRequest registrationRequest = new ServiceRegistrationRequest(service);
 		
