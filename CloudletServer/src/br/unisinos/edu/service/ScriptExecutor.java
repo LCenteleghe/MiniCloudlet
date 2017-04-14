@@ -5,8 +5,8 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import br.unisinos.edu.Service;
 import br.unisinos.edu.exception.ServiceExecutionFailureException;
+import br.unisinos.edu.lcloudlet.api.Service;
 
 public class ScriptExecutor implements ServiceExecutor {
 	ScriptEngine engine;
@@ -17,16 +17,13 @@ public class ScriptExecutor implements ServiceExecutor {
 		engine = new ScriptEngineManager().getEngineByMimeType(mimeType);
 	}
 
-	public Object execute(Service service, Object parametersData) {
+	public Object execute(Service service, Object[] parameters) {
 		try {
-			engine.eval(service.getCode().toString());
+			engine.eval(service.getSourceCode().toString());
 			Invocable invocableEngine = (Invocable) engine;
-			return invocableEngine.invokeFunction(service.getEntryMethod(), parametersData);
+			return invocableEngine.invokeFunction(service.getEntryMethod(), parameters);
 		} catch (NoSuchMethodException | ScriptException e) {
 			return new ServiceExecutionFailureException(e);
 		}
 	}
-
-
-
 }

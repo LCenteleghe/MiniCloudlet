@@ -1,4 +1,4 @@
-package br.unisinos.edu.request.dto;
+package br.unisinos.edu.lcloudlet.api;
 
 import java.io.Serializable;
 
@@ -7,24 +7,24 @@ public class ServiceExecutionRequest implements Serializable{
 	
 	private String serviceID;
 	
-	private Object parameterData;
+	private Object[] parameters;
 	
-	public ServiceExecutionRequest(String serviceID, Object parameterData) {
+	public ServiceExecutionRequest(String serviceID, Object[] parameterData) {
 		super();
 		this.serviceID = serviceID;
-		this.parameterData = parameterData;
+		this.parameters = parameterData;
 	}
 
 	public String getServiceID() {
 		return serviceID;
 	}
 
-	public Object getParametersData() {
-		return parameterData;
+	public Object[] getParametersData() {
+		return parameters;
 	}
 
 	@Override
 	public String toString() {
-		return "ServiceExecutionRequest [serviceID=" + serviceID + ", parameterData=" + parameterData + "]";
+		return "ServiceExecutionRequest [serviceID=" + serviceID + ", parameters=" + parameters + "]";
 	}
 }

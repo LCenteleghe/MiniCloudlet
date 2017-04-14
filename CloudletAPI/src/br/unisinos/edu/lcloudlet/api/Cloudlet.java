@@ -1,4 +1,4 @@
-package br.unisinos.edu;
+package br.unisinos.edu.lcloudlet.api;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -7,18 +7,15 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import br.unisinos.edu.request.dto.ServiceExecutionRequest;
-import br.unisinos.edu.request.dto.ServiceRegistrationRequest;
-import br.unisinos.edu.request.dto.SimpleQueryRequest;
-
-public class CloudletInterface {
+public class Cloudlet {
+	private static final int connectionTimeout = 1000;
 	private Socket socket = new Socket();
 	private InetSocketAddress socketAdress;
 	
 	private ObjectOutputStream streamToServer;
 	private ObjectInputStream streamFromServer;
 	
-	public CloudletInterface(String cloudletAddress) throws UnknownHostException, IOException{
+	public Cloudlet(String cloudletAddress) throws UnknownHostException {
 		socketAdress = new InetSocketAddress(cloudletAddress, 5555);
 	}
 	
@@ -28,14 +25,23 @@ public class CloudletInterface {
 	}
 	
 	
-	public String registerService(String id, String entryMethod, Object code, String mimeType){
-		Service service = new Service(id, entryMethod, code, mimeType);
+	public String registerService(String id, String entryMethod, String code, MimeType mimeType){
+		Service service = new Service(id, entryMethod, code, mimeType.getCode());
+		return registerService(service);
+	}
+	
+	public String registerService(String id, String entryMethod, Class<?> clazz, MimeType mimeType){
+		Service service = new Service(id, entryMethod, ClassUtils.getClassBytes(clazz), mimeType.getCode());
+		return registerService(service);
+	}
+
+	private String registerService(Service service) {
 		ServiceRegistrationRequest srr = new ServiceRegistrationRequest(service);
 		return String.valueOf(sendRequestToServer(srr));
 	}
 	
-	public String executeService(String serviceID, Object parameterData){
-		ServiceExecutionRequest ser = new ServiceExecutionRequest(serviceID, parameterData);
+	public String executeService(String serviceID, Object ... parameters){
+		ServiceExecutionRequest ser = new ServiceExecutionRequest(serviceID, parameters);
 		return String.valueOf(sendRequestToServer(ser));
 	}
 	
@@ -55,7 +61,7 @@ public class CloudletInterface {
 
 	private void openSocketAndConnectStreams() {
 			try {
-				socket.connect(socketAdress, 1000);
+				socket.connect(socketAdress, connectionTimeout);
 				streamToServer = new ObjectOutputStream(socket.getOutputStream());
 				streamFromServer = new ObjectInputStream(socket.getInputStream());
 			} catch (IOException e) {

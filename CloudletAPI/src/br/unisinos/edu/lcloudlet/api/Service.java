@@ -1,4 +1,4 @@
-package br.unisinos.edu;
+package br.unisinos.edu.lcloudlet.api;
 
 import java.io.Serializable;
 
@@ -22,7 +22,7 @@ public final class Service implements Serializable {
 		return id;
 	}
 
-	public Object getCode() {
+	public Object getSourceCode() {
 		return code;
 	}
 

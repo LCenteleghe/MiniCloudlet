@@ -2,33 +2,47 @@ package br.unisinos.edu.service;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-
-import br.unisinos.edu.Service;
+import br.unisinos.edu.lcloudlet.api.Service;
 
 public class ClassExecutor implements ServiceExecutor {
-	ScriptEngineManager factory = new ScriptEngineManager();
-	ScriptEngine engine = factory.getEngineByName("JavaScript");
-	
-	protected ClassExecutor(){}
-	
+	private Map<Service, Class<?>> loadedServiceClasses = new HashMap<>();
+
+	protected ClassExecutor() {
+	}
+
 	@Override
-	public Object execute(Service service, Object parametersData) {
+	public Object execute(Service service, Object[] parameters) {
+
+		if (!loadedServiceClasses.containsKey(service)) {
+			ByteClassLoader byteClassLoader = new ByteClassLoader();
+			loadedServiceClasses.put(service, byteClassLoader.defineClass((byte[]) service.getSourceCode()));
+		}
+
+		return execute(loadedServiceClasses.get(service), service.getEntryMethod(), parameters);
+	}
+
+	private Object execute(Class<?> clazz, String methodName, Object[] parameters) {
 		try {
-			Class<?> clazz = (Class<?>)service.getCode();
 			Object instance = clazz.newInstance();
-			Method method = clazz.getMethod(service.getEntryMethod());
-			return method.invoke(instance, parametersData);
-		} catch (InstantiationException | 
-				IllegalAccessException | 
-				IllegalArgumentException | 
-				InvocationTargetException |
-				NoSuchMethodException | 
-				SecurityException e) {
+			Method method = clazz.getMethod(methodName, getTypes(parameters));
+			return method.invoke(instance, parameters);
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {
 			return e;
 		}
+	}
+	
+	private Class<?>[] getTypes(Object[] parameters){
+		Class<?>[] types = new Class<?>[parameters.length];
+		
+		for (int i = 0; i < parameters.length; i++) {
+			types[i] = parameters[i].getClass();
+		}
+		
+		return types;
 	}
 
 }

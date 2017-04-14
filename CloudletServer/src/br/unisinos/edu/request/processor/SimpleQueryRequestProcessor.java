@@ -1,6 +1,6 @@
 package br.unisinos.edu.request.processor;
 
-import br.unisinos.edu.request.dto.SimpleQueryRequest;
+import br.unisinos.edu.lcloudlet.api.SimpleQueryRequest;
 import br.unisinos.edu.request.processor.query.GeneralQueryProcessor;
 
 public final class SimpleQueryRequestProcessor implements RequestProcessor<SimpleQueryRequest, String> {
