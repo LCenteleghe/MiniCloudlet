@@ -14,14 +14,14 @@ public final class GeneralRequestProcessor implements RequestProcessor<Object, O
 	 * @see br.unisinos.edu.request.processor.RequestProcessor#processRequest(java.lang.Object)
 	 */
 	public Object processRequest(Object request){
-		if(request instanceof ServiceRegistrationRequest){
-			ServiceRegistrationRequest registrationRequest = (ServiceRegistrationRequest)request;
-			return ServiceRegistrationRequestProcessor.getInstance().processRequest(registrationRequest);
-		}
-		
 		if(request instanceof SimpleQueryRequest){
 			SimpleQueryRequest serviceCheckRequest = (SimpleQueryRequest)request;
 			return SimpleQueryRequestProcessor.getInstance().processRequest(serviceCheckRequest);
+		}
+		
+		if(request instanceof ServiceRegistrationRequest){
+			ServiceRegistrationRequest registrationRequest = (ServiceRegistrationRequest)request;
+			return ServiceRegistrationRequestProcessor.getInstance().processRequest(registrationRequest);
 		}
 		
 		if(request instanceof ServiceExecutionRequest){

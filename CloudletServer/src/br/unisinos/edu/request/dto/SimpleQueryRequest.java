@@ -7,8 +7,8 @@ public class SimpleQueryRequest implements Serializable {
 	
 	private String query;
 	
-	public SimpleQueryRequest(String serviceID){
-		this.query = serviceID;
+	public SimpleQueryRequest(String query){
+		this.query = query;
 	}
 
 	public String getQuery() {
@@ -17,6 +17,6 @@ public class SimpleQueryRequest implements Serializable {
 
 	@Override
 	public String toString() {
-		return "SimpleQueryRequest [serviceID=" + query + "]";
+		return "SimpleQueryRequest [query=" + query + "]";
 	}
 }

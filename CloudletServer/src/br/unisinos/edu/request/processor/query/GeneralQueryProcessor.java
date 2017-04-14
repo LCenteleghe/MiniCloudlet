@@ -23,7 +23,7 @@ public class GeneralQueryProcessor {
 	
 	public String processQuery(String query) {
 		for (QueryProcessor queryProcessor : queryProcessors) {
-			if(queryProcessor.getQueryStyle().matches(query)){
+			if(queryProcessor.getQueryBaseCommand().matches(query)){
 				return queryProcessor.processQuery(query);
 			}
 		}

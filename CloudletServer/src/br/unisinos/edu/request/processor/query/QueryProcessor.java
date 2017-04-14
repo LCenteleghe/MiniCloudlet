@@ -1,9 +1,10 @@
 package br.unisinos.edu.request.processor.query;
 
 public interface QueryProcessor {
-	public String processQuery(String query);
+	String processQuery(String query);
 	
-	public String getQueryStyle();
+	String getQuerySummary();
+
+	String getQueryBaseCommand();
 	
-	public String getQuerySummary();
 }

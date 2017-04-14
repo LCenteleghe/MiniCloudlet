@@ -1,6 +1,7 @@
 package br.unisinos.edu;
 
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -31,5 +32,9 @@ public class ServicesBase {
 	
 	public boolean contains(String serviceID){
 		return servicesMap.containsKey(serviceID);
+	}
+	
+	public Set<String> getServicesIDs(){
+		return servicesMap.keySet();
 	}
 }
