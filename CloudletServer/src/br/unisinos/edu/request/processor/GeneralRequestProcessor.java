@@ -1,9 +1,9 @@
 package br.unisinos.edu.request.processor;
 
+import br.edu.unisinos.lcloudlet.api.ServiceExecutionRequest;
+import br.edu.unisinos.lcloudlet.api.ServiceRegistrationRequest;
+import br.edu.unisinos.lcloudlet.api.SimpleQueryRequest;
 import br.unisinos.edu.exception.NoRequestProcessorFound;
-import br.unisinos.edu.lcloudlet.api.ServiceExecutionRequest;
-import br.unisinos.edu.lcloudlet.api.ServiceRegistrationRequest;
-import br.unisinos.edu.lcloudlet.api.SimpleQueryRequest;
 
 public final class GeneralRequestProcessor implements RequestProcessor<Object, Object>{
 	private static GeneralRequestProcessor instance = new GeneralRequestProcessor();

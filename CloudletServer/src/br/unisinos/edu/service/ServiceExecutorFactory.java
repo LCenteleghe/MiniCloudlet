@@ -1,7 +1,7 @@
 package br.unisinos.edu.service;
 
+import br.edu.unisinos.lcloudlet.api.Service;
 import br.unisinos.edu.exception.NoServiceExecutorFound;
-import br.unisinos.edu.lcloudlet.api.Service;
 
 public final class ServiceExecutorFactory {
 	private ServiceExecutorFactory(){}

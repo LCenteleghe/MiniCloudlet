@@ -1,4 +1,4 @@
-package br.unisinos.edu.lcloudlet.api;
+package br.edu.unisinos.lcloudlet.api;
 
 public enum MimeType {
 	APPLICATION_JAVASCRIPT("application/javascript"),

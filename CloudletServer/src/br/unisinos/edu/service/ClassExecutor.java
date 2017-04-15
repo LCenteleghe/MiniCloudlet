@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import br.unisinos.edu.lcloudlet.api.Service;
+import br.edu.unisinos.lcloudlet.api.Service;
 
 public class ClassExecutor implements ServiceExecutor {
 	private Map<Service, Class<?>> loadedServiceClasses = new HashMap<>();

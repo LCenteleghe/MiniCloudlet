@@ -1,8 +1,8 @@
 package br.unisinos.edu.request.processor;
 
+import br.edu.unisinos.lcloudlet.api.Service;
+import br.edu.unisinos.lcloudlet.api.ServiceRegistrationRequest;
 import br.unisinos.edu.ServicesBase;
-import br.unisinos.edu.lcloudlet.api.Service;
-import br.unisinos.edu.lcloudlet.api.ServiceRegistrationRequest;
 
 public final class ServiceRegistrationRequestProcessor implements RequestProcessor<ServiceRegistrationRequest,  Boolean>{
 	

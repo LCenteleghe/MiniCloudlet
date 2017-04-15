@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import br.unisinos.edu.lcloudlet.api.Service;
+import br.edu.unisinos.lcloudlet.api.Service;
 
 public class ServicesBase {
 	private static ServicesBase instance;

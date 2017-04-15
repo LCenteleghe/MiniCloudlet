@@ -5,8 +5,8 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import br.edu.unisinos.lcloudlet.api.Service;
 import br.unisinos.edu.exception.ServiceExecutionFailureException;
-import br.unisinos.edu.lcloudlet.api.Service;
 
 public class ScriptExecutor implements ServiceExecutor {
 	ScriptEngine engine;

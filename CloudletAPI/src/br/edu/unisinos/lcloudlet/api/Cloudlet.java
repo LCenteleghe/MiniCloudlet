@@ -1,4 +1,4 @@
-package br.unisinos.edu.lcloudlet.api;
+package br.edu.unisinos.lcloudlet.api;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -67,5 +67,10 @@ public class Cloudlet {
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
+	}
+
+	public boolean checkService(String serviceID) {
+		SimpleQueryRequest sqr = new SimpleQueryRequest("CHECK " + serviceID);
+		return Boolean.valueOf(sendRequestToServer(sqr).toString());
 	}
 }
