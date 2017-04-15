@@ -1,19 +1,24 @@
 package br.edu.unisinos.lcloudlet;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.nearby.Nearby;
+
 import java.net.UnknownHostException;
 
-import br.edu.unisinos.lcloudlet.R;
 import br.edu.unisinos.lcloudlet.api.MimeType;
 import br.edu.unisinos.lcloudlet.api.Cloudlet;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private String offloadableJSCode =
             "function heavyAlgorithm(n) {"
@@ -32,6 +37,12 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Nearby.MESSAGES_API)
+                .addConnectionCallbacks(this)
+                .enableAutoManage(this, this)
+                .build();
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -39,12 +50,12 @@ public class MainActivity extends Activity {
 
         findViewById(R.id.process).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                onclickProccess();
+                onclickProcess();
             }
         });
     }
 
-    private void onclickProccess() {
+    private void onclickProcess() {
         long startTime = System.currentTimeMillis();
 
         Long n = getN();
@@ -109,5 +120,20 @@ public class MainActivity extends Activity {
             }
         }
         return result;
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }
