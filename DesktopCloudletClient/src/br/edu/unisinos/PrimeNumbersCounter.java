@@ -15,7 +15,7 @@ public class PrimeNumbersCounter {
 	private Cloudlet cloudlet;
 
 	public PrimeNumbersCounter() throws UnknownHostException, IOException {
-		cloudlet = new Cloudlet("35.185.192.177");
+		cloudlet = new Cloudlet("localhost");
 	}
 
 	private void start() {
