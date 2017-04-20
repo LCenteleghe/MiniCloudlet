@@ -3,6 +3,9 @@ package br.edu.unisinos.lcloudlet.api;
 import java.io.Serializable;
 import java.util.Arrays;
 
+/**
+ * Represents a request for service execution.
+ */
 public class ServiceExecutionRequest implements Serializable{
 	private static final long serialVersionUID = -6493525239149932063L;
 	
