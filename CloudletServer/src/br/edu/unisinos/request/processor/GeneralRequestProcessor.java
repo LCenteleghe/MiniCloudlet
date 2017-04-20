@@ -5,14 +5,15 @@ import br.edu.unisinos.lcloudlet.api.ServiceExecutionRequest;
 import br.edu.unisinos.lcloudlet.api.ServiceRegistrationRequest;
 import br.edu.unisinos.lcloudlet.api.SimpleQueryRequest;
 
+/**
+ * A general query processor. Used as an entry point for any request.
+ */
 public final class GeneralRequestProcessor implements RequestProcessor<Object, Object>{
 	private static GeneralRequestProcessor instance = new GeneralRequestProcessor();
 	
 	private GeneralRequestProcessor(){}
 	
-	/* (non-Javadoc)
-	 * @see br.unisinos.edu.request.processor.RequestProcessor#processRequest(java.lang.Object)
-	 */
+	@Override
 	public Object processRequest(Object request){
 		if(request instanceof SimpleQueryRequest){
 			SimpleQueryRequest serviceCheckRequest = (SimpleQueryRequest)request;
@@ -32,6 +33,11 @@ public final class GeneralRequestProcessor implements RequestProcessor<Object, O
 		throw new NoRequestProcessorFound(request);
 	}
 	
+	/**
+	 * Gets the single instance of GeneralRequestProcessor.
+	 *
+	 * @return single instance of GeneralRequestProcessor
+	 */
 	public static GeneralRequestProcessor getInstance(){
 		return instance;
 	}

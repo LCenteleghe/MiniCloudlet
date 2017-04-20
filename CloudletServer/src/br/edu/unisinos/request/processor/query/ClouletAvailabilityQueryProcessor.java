@@ -1,5 +1,8 @@
 package br.edu.unisinos.request.processor.query;
 
+/**
+ * Query processor for checking the Cloudlet availability.
+ */
 public class ClouletAvailabilityQueryProcessor implements QueryProcessor {
 	private static ClouletAvailabilityQueryProcessor instance = new ClouletAvailabilityQueryProcessor();
 
@@ -20,6 +23,11 @@ public class ClouletAvailabilityQueryProcessor implements QueryProcessor {
 		return "Checks whether the cloudlet is available to receive more services.";
 	}
 
+	/**
+	 * Gets the single instance of ClouletAvailabilityQueryProcessor.
+	 *
+	 * @return single instance of ClouletAvailabilityQueryProcessor
+	 */
 	public static ClouletAvailabilityQueryProcessor getInstance() {
 		return instance;
 	}

@@ -1,6 +1,6 @@
 package br.edu.unisinos.request.processor;
 
-import br.edu.unisinos.ServicesBase;
+import br.edu.unisinos.ServicesDataBase;
 import br.edu.unisinos.lcloudlet.api.Service;
 import br.edu.unisinos.lcloudlet.api.ServiceRegistrationRequest;
 
@@ -10,7 +10,7 @@ public final class ServiceRegistrationRequestProcessor implements RequestProcess
 	
 	public Boolean processRequest(ServiceRegistrationRequest request){
 		Service service = request.getService();
-		return ServicesBase.getInstance().registerService(service);
+		return ServicesDataBase.getInstance().registerService(service);
 	}
 	
 	public static ServiceRegistrationRequestProcessor getInstance(){

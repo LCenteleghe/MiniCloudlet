@@ -8,15 +8,28 @@ import java.net.Socket;
 import br.edu.unisinos.request.processor.GeneralRequestProcessor;
 
 /**
- * Thread criada para atender um cliente do servidor.
+ * Thread used to serve clients.
  */
 public final class ServerThread implements Runnable {
+	
+	/** The socket. */
 	private final Socket socket;
+	
+	/** The stream from client. */
 	private ObjectInputStream streamFromClient;
+	
+	/** The stream to client. */
 	private ObjectOutputStream streamToClient;
 
+	/** The request processor. */
 	private GeneralRequestProcessor requestProcessor = GeneralRequestProcessor.getInstance();
 
+	/**
+	 * Instantiates a new server thread.
+	 *
+	 * @param socket the socket
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private ServerThread(Socket socket) throws IOException {
 		this.socket = socket;
 		streamFromClient = new ObjectInputStream(socket.getInputStream());
@@ -25,15 +38,21 @@ public final class ServerThread implements Runnable {
 		System.out.println("Server thread started to serve the socket: " + socket);
 	}
 
+	/**
+	 * Creates a new instance of this Server Thread.
+	 *
+	 * @param socket the socket
+	 * @return the runnable
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static Runnable newInstance(Socket socket) throws IOException {
 		return new ServerThread(socket);
 	}
 
 	/**
-	 * Aguarda um request do cliente, ao receber o request, retorna ele como
-	 * String.
+	 * Waits for a request from the client. Once it's received returns it as an Object.
 	 * 
-	 * @return
+	 * @return The request object.
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
@@ -50,12 +69,12 @@ public final class ServerThread implements Runnable {
 		}
 	}
 
+
 	/**
-	 * Responde ao request do cliente com os bytes do arquivo solicidado.
-	 * 
-	 * @param requestMsg
-	 *            Requisição (nome do arquivo desejado).
-	 * @throws IOException
+	 *  Sends a response to the client.
+	 *
+	 * @param response the response object
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private void sendResponse(Object response) throws IOException {
 		streamToClient.writeObject(response);
@@ -63,7 +82,7 @@ public final class ServerThread implements Runnable {
 	}
 
 	/**
-	 * Fecha o socket utilizado para comunicação.
+	 * Closes the socket used for communication.
 	 */
 	private void closeSocket() {
 		try {
@@ -74,7 +93,7 @@ public final class ServerThread implements Runnable {
 	}
 
 	/**
-	 * Inicia a thread criada para atender um cliente.
+	 * Starts the thread.
 	 */
 	public void run() {
 		try {
@@ -90,13 +109,18 @@ public final class ServerThread implements Runnable {
 		}
 	}
 
-	private void sendErrorResponse(Exception e) {
-		System.err.println("The server was unable to process the request: " + e.getMessage());
+	/**
+	 * Sends and error response to the client.
+	 *
+	 * @param exception the exception that caused the error.
+	 */
+	private void sendErrorResponse(Exception exception) {
+		System.err.println("The server was unable to process the request: " + exception.getMessage());
 		try {
-			sendResponse(e);
+			sendResponse(exception);
 		} catch (IOException e1) {
 			System.err
-					.println("The server was unable to send " + "the error response to the client: " + e.getMessage());
+					.println("The server was unable to send " + "the error response to the client: " + exception.getMessage());
 		}
 	}
 

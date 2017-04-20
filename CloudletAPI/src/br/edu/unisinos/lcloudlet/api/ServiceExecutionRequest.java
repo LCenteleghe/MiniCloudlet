@@ -15,6 +15,13 @@ public class ServiceExecutionRequest implements Serializable{
 	
 	private Object[] parameters;
 
+	/**
+	 * Instantiates a new service execution request.
+	 *
+	 * @param serviceID the service ID
+	 * @param method the method
+	 * @param parameters the parameters
+	 */
 	public ServiceExecutionRequest(String serviceID, String method, Object[] parameters) {
 		super();
 		this.serviceID = serviceID;
@@ -22,14 +29,29 @@ public class ServiceExecutionRequest implements Serializable{
 		this.parameters = parameters;
 	}
 
+	/**
+	 * Gets the service ID.
+	 *
+	 * @return the service ID
+	 */
 	public String getServiceID() {
 		return serviceID;
 	}
 
+	/**
+	 * Gets the parameters data.
+	 *
+	 * @return the parameters data
+	 */
 	public Object[] getParametersData() {
 		return parameters;
 	}
 
+	/**
+	 * Gets the method.
+	 *
+	 * @return the method
+	 */
 	public String getMethod() {
 		return method;
 	}

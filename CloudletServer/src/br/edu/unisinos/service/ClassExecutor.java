@@ -8,6 +8,9 @@ import java.util.Map;
 import br.edu.unisinos.exception.ServiceExecutionFailureException;
 import br.edu.unisinos.lcloudlet.api.Service;
 
+/**
+ * Executor for class base services.
+ */
 public class ClassExecutor implements ServiceExecutor {
 	private Map<Service, Class<?>> loadedServiceClasses = new HashMap<>();
 

@@ -4,8 +4,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * Class utilities.
+ */
 public class ClassUtils {
 	
+	/**
+	 * Gets the bytes of a class.
+	 *
+	 * @param clazz the clazz
+	 * @return the class bytes
+	 */
 	public static byte[] getClassBytes(Class<?> clazz){
 		String className = clazz.getName();
 		String classAsPath = className.replace('.', '/') + ".class";
@@ -14,6 +23,12 @@ public class ClassUtils {
 		return readAllBytes(is);
 	}
 
+	/**
+	 * Read all bytes from a input stream.
+	 *
+	 * @param stream the input stream
+	 * @return the byte[]
+	 */
 	private static byte[] readAllBytes(InputStream stream) {
 		ByteArrayOutputStream classBytes = new ByteArrayOutputStream();
 

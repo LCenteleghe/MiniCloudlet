@@ -1,8 +1,11 @@
 package br.edu.unisinos.request.processor.query;
 
-import br.edu.unisinos.ServicesBase;
+import br.edu.unisinos.ServicesDataBase;
 import br.edu.unisinos.exception.InvalidQueryParametersException;
 
+/**
+ * Query processor for checking whether a Service ID is registered in the cloudlet.
+ */
 public class ServiceCheckQueryProcessor implements QueryProcessor {
 	private static ServiceCheckQueryProcessor instance = new ServiceCheckQueryProcessor();
 
@@ -15,7 +18,7 @@ public class ServiceCheckQueryProcessor implements QueryProcessor {
 		validateQueryParts(queryParts);
 		
 		String serviceID = queryParts[1];
-		return String.valueOf(ServicesBase.getInstance().contains(serviceID));
+		return String.valueOf(ServicesDataBase.getInstance().contains(serviceID));
 	}
 
 	private void validateQueryParts(String[] queryParts) {
@@ -34,6 +37,11 @@ public class ServiceCheckQueryProcessor implements QueryProcessor {
 		return "Checks whether a service is available in cloudlet. Parameters: $ServiceID ";
 	}
 
+	/**
+	 * Gets the single instance of ServiceCheckQueryProcessor.
+	 *
+	 * @return single instance of ServiceCheckQueryProcessor
+	 */
 	public static ServiceCheckQueryProcessor getInstance() {
 		return instance;
 	}

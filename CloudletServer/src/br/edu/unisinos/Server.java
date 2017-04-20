@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * Represents the Cloudlet server.
+ */
 public class Server {
 	private static final int SERVER_DEFAULT_PORT = 5555;
 	private ServerSocket serverSocket;
@@ -12,15 +15,17 @@ public class Server {
 		serverSocket = new ServerSocket(port);
 	}
 
+
 	/**
-	 * Inicia o servidor.
-	 * @param port Porta na qual o servidor será iniciado.
-	 * @throws IOException
+	 * Starts the server.
+	 *
+	 * @param port the port where the server will receive connections.
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public void start(int port) throws IOException {
 		System.out.println("The server has started.");
 		
-		//Aguarda conexões, e delega elas para uma thread.
+		//Wait for connections and delegate them to threads.
 		while(true){
 			Socket socket = waitForConnection();
 			new Thread(ServerThread.newInstance(socket)).start();
@@ -28,15 +33,23 @@ public class Server {
 	
 	}
 
+
 	/**
-	 * Aguarda por uma conexão.
-	 * @return O socket da conexão recebida.
-	 * @throws IOException
+	 * Wait for connection.
+	 *
+	 * @return the socket
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private Socket waitForConnection() throws IOException {
 		return serverSocket.accept();
 	}
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static void main(String[] args) throws IOException {
 		new Server(SERVER_DEFAULT_PORT).start(SERVER_DEFAULT_PORT);
 	}
