@@ -17,11 +17,11 @@ public class ScriptExecutor implements ServiceExecutor {
 		engine = new ScriptEngineManager().getEngineByMimeType(mimeType);
 	}
 
-	public Object execute(Service service, Object[] parameters) {
+	public Object execute(Service service, String method, Object[] parameters) {
 		try {
 			engine.eval(service.getSourceCode().toString());
 			Invocable invocableEngine = (Invocable) engine;
-			return invocableEngine.invokeFunction(service.getEntryMethod(), parameters);
+			return invocableEngine.invokeFunction(method, parameters);
 		} catch (NoSuchMethodException | ScriptException e) {
 			return new ServiceExecutionFailureException(e);
 		}

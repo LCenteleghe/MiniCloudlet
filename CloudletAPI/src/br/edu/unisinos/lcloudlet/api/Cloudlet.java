@@ -25,13 +25,13 @@ public class Cloudlet {
 	}
 	
 	
-	public String registerService(String id, String entryMethod, String code, MimeType mimeType){
-		Service service = new Service(id, entryMethod, code, mimeType.getCode());
+	public String registerService(String id, String code, MimeType mimeType){
+		Service service = new Service(id, code, mimeType.getCode());
 		return registerService(service);
 	}
 	
-	public String registerService(String id, String entryMethod, Class<?> clazz, MimeType mimeType){
-		Service service = new Service(id, entryMethod, ClassUtils.getClassBytes(clazz), mimeType.getCode());
+	public String registerService(String id, Class<?> clazz, MimeType mimeType){
+		Service service = new Service(id, ClassUtils.getClassBytes(clazz), mimeType.getCode());
 		return registerService(service);
 	}
 
@@ -40,8 +40,8 @@ public class Cloudlet {
 		return String.valueOf(sendRequestToServer(srr));
 	}
 	
-	public String executeService(String serviceID, Object ... parameters){
-		ServiceExecutionRequest ser = new ServiceExecutionRequest(serviceID, parameters);
+	public String executeService(String serviceID, String method, Object ... parameters){
+		ServiceExecutionRequest ser = new ServiceExecutionRequest(serviceID, method, parameters);
 		return String.valueOf(sendRequestToServer(ser));
 	}
 	

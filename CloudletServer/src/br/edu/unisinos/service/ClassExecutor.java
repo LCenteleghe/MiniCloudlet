@@ -14,14 +14,14 @@ public class ClassExecutor implements ServiceExecutor {
 	}
 
 	@Override
-	public Object execute(Service service, Object[] parameters) {
+	public Object execute(Service service, String method, Object[] parameters) {
 
 		if (!loadedServiceClasses.containsKey(service)) {
 			ByteClassLoader byteClassLoader = new ByteClassLoader();
 			loadedServiceClasses.put(service, byteClassLoader.defineClass((byte[]) service.getSourceCode()));
 		}
 
-		return execute(loadedServiceClasses.get(service), service.getEntryMethod(), parameters);
+		return execute(loadedServiceClasses.get(service), method, parameters);
 	}
 
 	private Object execute(Class<?> clazz, String methodName, Object[] parameters) {
