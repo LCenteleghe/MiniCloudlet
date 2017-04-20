@@ -23,7 +23,7 @@ public class ScriptExecutor implements ServiceExecutor {
 			Invocable invocableEngine = (Invocable) engine;
 			return invocableEngine.invokeFunction(method, parameters);
 		} catch (NoSuchMethodException | ScriptException e) {
-			return new ServiceExecutionFailureException(e);
+			throw new ServiceExecutionFailureException(e);
 		}
 	}
 }

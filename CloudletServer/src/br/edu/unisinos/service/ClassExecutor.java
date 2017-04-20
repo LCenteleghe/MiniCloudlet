@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.edu.unisinos.exception.ServiceExecutionFailureException;
 import br.edu.unisinos.lcloudlet.api.Service;
 
 public class ClassExecutor implements ServiceExecutor {
@@ -31,7 +32,7 @@ public class ClassExecutor implements ServiceExecutor {
 			return method.invoke(instance, parameters);
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException e) {
-			return e;
+			throw new ServiceExecutionFailureException(e);
 		}
 	}
 	

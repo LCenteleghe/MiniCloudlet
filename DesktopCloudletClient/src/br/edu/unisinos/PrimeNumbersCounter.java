@@ -15,12 +15,13 @@ public class PrimeNumbersCounter {
 	private Cloudlet cloudlet;
 
 	public PrimeNumbersCounter() throws UnknownHostException, IOException {
-		cloudlet = new Cloudlet("localhost");
+		cloudlet = new Cloudlet("35.185.192.177");
 	}
 
 	private void start() {
 		Scanner scanner = new Scanner(System.in);
 		while (true) {
+			System.out.println("\nEnter N: ");
 			long n = Long.valueOf(scanner.nextLine());
 
 			if (n == -1) {
@@ -29,46 +30,43 @@ public class PrimeNumbersCounter {
 
 			long startTime = System.currentTimeMillis();
 
+			long qttNumbersSumUpToFive;
 			if (n < localExecutionTreshold) {
-				System.out.println(countPrimeNumbers(n));
+				qttNumbersSumUpToFive = countNumbersSumupTo(n, 5L);
+				System.out.println("Executed locally.");
 			} else {
-				System.out.println(remoteHeavyAlgorithm(n));
+				qttNumbersSumUpToFive = countPrimeNumbersRemotely(n);
+				System.out.println("Executed remotelly on " + cloudlet);
 			}
 
-			long endTime = System.currentTimeMillis();
-			System.out.println("Total time: " + (endTime - startTime));
+			System.out.println("Total quantity of numbers between 0 and " + n + " that sum up to 5: " + qttNumbersSumUpToFive);
+			System.out.println("Total execution time: " + (System.currentTimeMillis() - startTime) + "ms");
 		}
 		scanner.close();
 	}
 
-	private double remoteHeavyAlgorithm(Long n) {
-		// cloudlet.registerService("heavyAlgorithm", "heavyAlgorithm",
-		// offloadableJSCode, MimeType.APPLICATION_JAVASCRIPT);
-		if (!cloudlet.checkService("primeCounter")) {
-			cloudlet.registerService("primeCounter", getJSServiceCode(), MimeType.APPLICATION_JAVASCRIPT);
+	private long countPrimeNumbersRemotely(Long n) {
+		if (!cloudlet.checkService("numberCounter")) {
+			cloudlet.registerService("numberCounter", this.getClass(), MimeType.APPLICATION_JAVA);
 		}
-		return Double.valueOf(cloudlet.executeService("primeCounter", "countPrimeNumbers", n));
+		return Long.valueOf(cloudlet.executeService("numberCounter", "countNumbersSumupTo", n, 5L));
 	}
 
-	public double countPrimeNumbers(Long n) {
-		long count = 0;
-		for (long i = 0; i < n; i++) {
-			if (isPrime(i)) {
-				count++;
-			}
-		}
-		return count;
-	}
+    /**
+     * Counts the quantity of numbers between 0 an N that sum up to the targetNumber.
+     */
+    public long countNumbersSumupTo(Long n, Long targetNumber) {
+        long count = 0;
+        for (long i = 0; i < n; i++){
+            for (long k = 0; k < n; k++){
+                if(i + k == 5){
+                    count++;
+                }
+            }
+        }
 
-	public boolean isPrime(Long number) {
-		for (long i = 2; i < number; i++) {
-			if (number % i == 0) {
-				return false;
-			}
-		}
-
-		return true;
-	}
+        return count;
+    }
 
 	public static void main(String[] args) throws UnknownHostException, IOException {
 		new PrimeNumbersCounter().start();
@@ -76,7 +74,8 @@ public class PrimeNumbersCounter {
 
 	public String getJSServiceCode() {
 		try {
-			return new String(Files.readAllBytes(FileSystems.getDefault().getPath("offloadable_code/PrimeNumbersCounter.js")));
+			return new String(
+					Files.readAllBytes(FileSystems.getDefault().getPath("offloadable_code/PrimeNumbersCounter.js")));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

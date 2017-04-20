@@ -1,19 +1,12 @@
-function countPrimeNumbers(n) {
-	var count = 0;
-	for (var i = 0; i < n; i++) {
-		if (isPrime(i)) {
-			count++;
-		}
-	}
-	return count;
-}
+    function countNumbersSumupTo(n, targetNumber) {
+        var count = 0;
+        for (var i = 0; i < n; i++){
+            for (var k = 0; k < n; k++){
+                if(i + k == 5){
+                    count++;
+                }
+            }
+        }
 
-function isPrime(number) {
-	for (var i = 2; i < number; i++) {
-		if (number % i === 0) {
-			return false;
-		}
-	}
-
-	return true;
-}
+        return count;
+    }

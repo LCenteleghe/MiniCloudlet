@@ -31,7 +31,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>br.unisinos.edu.Server</mainClass>
+							<mainClass>br.edu.unisinos.Server</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

@@ -19,6 +19,11 @@ public final class ServiceExecutionRequestProcessor implements RequestProcessor<
 
 	public Object processRequest(ServiceExecutionRequest request) {
 		Service service = ServicesBase.getInstance().getService(request.getServiceID());
+		
+		if(service == null){
+			throw new ServiceNotFoundException(request.getServiceID());
+		}
+		
 		ServiceExecutor serviceExecutor = ServiceExecutorFactory.getExecutorByServiceMIME(service);
 		return serviceExecutor.execute(service, request.getMethod(), request.getParametersData());
 	}

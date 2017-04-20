@@ -7,8 +7,10 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import br.edu.unisinos.lcloudlet.util.ClassUtils;
+
 public class Cloudlet {
-	private static final int connectionTimeout = 1000;
+	private static final int connectionTimeout = 1000*60;
 	private Socket socket = new Socket();
 	private InetSocketAddress socketAdress;
 	
@@ -72,5 +74,10 @@ public class Cloudlet {
 	public boolean checkService(String serviceID) {
 		SimpleQueryRequest sqr = new SimpleQueryRequest("CHECK " + serviceID);
 		return Boolean.valueOf(sendRequestToServer(sqr).toString());
+	}
+	
+	@Override
+	public String toString() {
+		return "Cloudlet [" + socketAdress + "]";
 	}
 }

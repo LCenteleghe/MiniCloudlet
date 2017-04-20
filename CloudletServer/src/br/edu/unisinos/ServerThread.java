@@ -14,14 +14,14 @@ public final class ServerThread implements Runnable {
 	private final Socket socket;
 	private ObjectInputStream streamFromClient;
 	private ObjectOutputStream streamToClient;
-	
+
 	private GeneralRequestProcessor requestProcessor = GeneralRequestProcessor.getInstance();
 
 	private ServerThread(Socket socket) throws IOException {
 		this.socket = socket;
 		streamFromClient = new ObjectInputStream(socket.getInputStream());
 		streamToClient = new ObjectOutputStream(socket.getOutputStream());
-		
+
 		System.out.println("Server thread started to serve the socket: " + socket);
 	}
 
@@ -43,7 +43,11 @@ public final class ServerThread implements Runnable {
 
 	private Object processRequest(Object request) {
 		System.out.println("Request received on socket: " + socket + " \nRequest: " + request);
-		return requestProcessor.processRequest(request);
+		try {
+			return requestProcessor.processRequest(request);
+		} catch (Exception e) {
+			return e.getMessage();
+		}
 	}
 
 	/**
