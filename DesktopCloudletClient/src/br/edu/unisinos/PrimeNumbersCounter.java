@@ -35,7 +35,7 @@ public class PrimeNumbersCounter {
 				qttNumbersSumUpToFive = countNumbersSumupTo(n, 5L);
 				System.out.println("Executed locally.");
 			} else {
-				qttNumbersSumUpToFive = countPrimeNumbersRemotely(n);
+				qttNumbersSumUpToFive = countNumbersSumupToRemotely(n);
 				System.out.println("Executed remotelly on " + cloudlet);
 			}
 
@@ -45,7 +45,7 @@ public class PrimeNumbersCounter {
 		scanner.close();
 	}
 
-	private long countPrimeNumbersRemotely(Long n) {
+	private long countNumbersSumupToRemotely(Long n) {
 		if (!cloudlet.checkService("numberCounter")) {
 			cloudlet.registerService("numberCounter", this.getClass(), MimeType.APPLICATION_JAVA);
 		}
