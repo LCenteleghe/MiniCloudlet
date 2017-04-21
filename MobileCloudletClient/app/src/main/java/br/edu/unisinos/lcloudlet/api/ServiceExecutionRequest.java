@@ -1,18 +1,22 @@
 package br.edu.unisinos.lcloudlet.api;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class ServiceExecutionRequest implements Serializable{
 	private static final long serialVersionUID = -6493525239149932063L;
 	
 	private String serviceID;
 	
-	private Object[] parameters;
+	private String method;
 	
-	public ServiceExecutionRequest(String serviceID, Object[] parameterData) {
+	private Object[] parameters;
+
+	public ServiceExecutionRequest(String serviceID, String method, Object[] parameters) {
 		super();
 		this.serviceID = serviceID;
-		this.parameters = parameterData;
+		this.method = method;
+		this.parameters = parameters;
 	}
 
 	public String getServiceID() {
@@ -23,8 +27,13 @@ public class ServiceExecutionRequest implements Serializable{
 		return parameters;
 	}
 
+	public String getMethod() {
+		return method;
+	}
+
 	@Override
 	public String toString() {
-		return "ServiceExecutionRequest [serviceID=" + serviceID + ", parameters=" + parameters + "]";
+		return "ServiceExecutionRequest [serviceID=" + serviceID + ", method=" + method + ", parameters="
+				+ Arrays.toString(parameters) + "]";
 	}
 }

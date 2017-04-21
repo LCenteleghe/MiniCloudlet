@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "br.edu.unisinos.lcloudlet"
+        applicationId "unisinos.edu.br.mobilecloudletclient"
         minSdkVersion 23
         targetSdkVersion 25
         versionCode 1
@@ -17,7 +17,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
@@ -27,6 +26,5 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.google.android.gms:play-services-nearby:10.2.1'
     testCompile 'junit:junit:4.12'
 }

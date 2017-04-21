@@ -1,4 +1,4 @@
-package br.edu.unisinos.lcloudlet.api;
+package br.edu.unisinos.lcloudlet.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

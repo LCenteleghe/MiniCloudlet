@@ -1,47 +1,25 @@
 package br.edu.unisinos.lcloudlet;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.nearby.Nearby;
-
 import java.net.UnknownHostException;
 
-import br.edu.unisinos.lcloudlet.api.MimeType;
 import br.edu.unisinos.lcloudlet.api.Cloudlet;
+import br.edu.unisinos.lcloudlet.api.MimeType;
+import unisinos.edu.br.lcloudlet.R;
 
-public class MainActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-
-    private String offloadableJSCode =
-            "function heavyAlgorithm(n) {"
-                    + "var result = n;"
-                    + "for (var i = 0; i < n; i++) {"
-                    + "for (var j = 0; j < n; j++) {"
-                    + "result = (result * i + j) % n;"
-                    + "}"
-                    + "}"
-                    + "return result;"
-                    + "}";
+public class MainActivity extends Activity {
 
     private Cloudlet cloudlet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(Nearby.MESSAGES_API)
-                .addConnectionCallbacks(this)
-                .enableAutoManage(this, this)
-                .build();
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -56,32 +34,35 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
     }
 
     private void onclickProcess() {
-        long startTime = System.currentTimeMillis();
+        clearResponseField();
 
-        Long n = getN();
-        Long localExecutionTreshold = getTreshold();
+        try {
+            Long n = getN();
+            Long localExecutionTreshold = getTreshold();
 
-        if (n <= localExecutionTreshold) {
-            writeResponse(String.valueOf(heavyAlgorithm(n)));
+            long startTime = System.currentTimeMillis();
 
-            writeResponse("Result: " + heavyAlgorithm(getN())
-                    + "\nProcessing time: " + (System.currentTimeMillis() - startTime) + "ms"
-                    + "\n(Executed Locally)");
-
-        } else {
-            try {
-                writeResponse("Result: " + remoteHeavyAlgorithm(getN())
-                        + "\nProcessing time: " + (System.currentTimeMillis() - startTime) + "ms"
-                        + "\n(Executed on: " + getCloudletAddress() + ")");
-            } catch (UnknownHostException e) {
-                writeResponse("Cloudlet not found: " + getCloudletAddress());
-            } catch (Exception e){
-                e.printStackTrace();
-                writeResponse("Error to offload the processing." + e.getMessage());
+            long qttNumbersSumUpToFive;
+            if (n < localExecutionTreshold) {
+                qttNumbersSumUpToFive = countNumbersSumupTo(n, 5L);
+                writeResponse("Executed locally.");
+            } else {
+                qttNumbersSumUpToFive = countPrimeNumbersRemotely(n);
+                writeResponse("Executed remotelly on " + cloudlet);
             }
+
+            writeResponse("Total quantity of numbers between 0 and " + n + " that sum up to 5: " + qttNumbersSumUpToFive);
+            writeResponse("Total execution time: " + (System.currentTimeMillis() - startTime) + "ms");
+        } catch (UnknownHostException e) {
+            writeResponse("Cloudlet not found: " + getCloudletAddress());
+        } catch (Exception e) {
+            e.printStackTrace();
+            writeResponse("Error to offload the processing:" + e.getMessage());
         }
+    }
 
-
+    private void clearResponseField() {
+        ((TextView) findViewById(R.id.result)).setText("");
     }
 
     private Long getTreshold() {
@@ -90,50 +71,41 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
 
     private void writeResponse(String response) {
         ((TextView) findViewById(R.id.result))
-                .setText(response);
+                .append(response + "\n");
     }
 
     private Long getN() {
         return Long.valueOf(((EditText) findViewById(R.id.n)).getText().toString());
     }
 
-    private double remoteHeavyAlgorithm(Long n) throws UnknownHostException {
+    private long countPrimeNumbersRemotely(Long n) throws UnknownHostException {
         if (cloudlet == null) {
             cloudlet = new Cloudlet(getCloudletAddress());
         }
 
-        if(!cloudlet.checkService("heavyAlgorithm")) {
-            cloudlet.registerService("heavyAlgorithm", "heavyAlgorithm", offloadableJSCode, MimeType.APPLICATION_JAVASCRIPT);
+        if (!cloudlet.checkService("numberCounter")) {
+            cloudlet.registerService("numberCounter", getResources().getString(R.string.offloadable_code), MimeType.APPLICATION_JAVASCRIPT);
         }
-        return Double.valueOf(cloudlet.executeService("heavyAlgorithm", n));
+        return (long)Double.parseDouble(cloudlet.executeService("numberCounter", "countNumbersSumupTo", n, 5L));
     }
 
     private String getCloudletAddress() {
         return ((EditText) findViewById(R.id.cloudletAddress)).getText().toString();
     }
 
-    public double heavyAlgorithm(Long n) {
-        double result = n;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                result = (result * i + j) % n;
+    /**
+     * Counts the quantity of numbers between 0 an N that sum up to the targetNumber.
+     */
+    public long countNumbersSumupTo(Long n, Long targetNumber) {
+        long count = 0;
+        for (long i = 0; i < n; i++){
+            for (long k = 0; k < n; k++){
+                if(i + k == 5){
+                    count++;
+                }
             }
         }
-        return result;
-    }
 
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        return count;
     }
 }
