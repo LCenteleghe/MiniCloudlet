@@ -9,15 +9,25 @@ import java.util.Scanner;
 import br.edu.unisinos.lcloudlet.api.Cloudlet;
 import br.edu.unisinos.lcloudlet.api.MimeType;
 
-public class PrimeNumbersCounter {
-	private static long localExecutionTreshold = 500;
-
+/**
+ * Test class used as an example of usage of the Cloudlet.
+ */
+public class NumbersSumCounter { private static long localExecutionTreshold = 500; 
 	private Cloudlet cloudlet;
 
-	public PrimeNumbersCounter() throws UnknownHostException, IOException {
+	/**
+	 * Instantiates a new numbers sum counter.
+	 *
+	 * @throws UnknownHostException the unknown host exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
+	public NumbersSumCounter() throws UnknownHostException, IOException {
 		cloudlet = new Cloudlet("localhost");
 	}
 
+	/**
+	 * Starts the test program.
+	 */
 	private void start() {
 		Scanner scanner = new Scanner(System.in);
 		while (true) {
@@ -45,6 +55,12 @@ public class PrimeNumbersCounter {
 		scanner.close();
 	}
 
+	/**
+	 * Test method that executes in O(n^2).
+	 *
+	 * @param n the n
+	 * @return the long
+	 */
 	private long countNumbersSumupToRemotely(Long n) {
 		if (!cloudlet.checkService("numberCounter")) {
 			cloudlet.registerService("numberCounter", this.getClass(), MimeType.APPLICATION_JAVA);
@@ -54,6 +70,9 @@ public class PrimeNumbersCounter {
 
     /**
      * Counts the quantity of numbers between 0 an N that sum up to the targetNumber.
+     * @param n N
+     * @param targetNumber The targe number.
+     * @return the quantity of numbers between 0 an N that sum up to the targetNumber.
      */
     public long countNumbersSumupTo(Long n, Long targetNumber) {
         long count = 0;
@@ -68,10 +87,22 @@ public class PrimeNumbersCounter {
         return count;
     }
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 * @throws UnknownHostException the unknown host exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static void main(String[] args) throws UnknownHostException, IOException {
-		new PrimeNumbersCounter().start();
+		new NumbersSumCounter().start();
 	}
 
+	/**
+	 * Gets the JS service code.
+	 *
+	 * @return the JS service code
+	 */
 	public String getJSServiceCode() {
 		try {
 			return new String(
